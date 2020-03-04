@@ -1,0 +1,30 @@
+version: '3.6'
+networks:
+  libraries:
+
+services:
+  api:
+    networks:
+      - libraries
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - ./.env
+    ports:
+      - "4567:4567"
+    depends_on:
+      - redis
+    links:
+      - redis
+    env_file:
+      - ./.env
+    volumes:
+      - ./:/usr/src/app
+
+  redis:
+    networks:
+      - libraries
+    image: redis
+    ports:
+      - '6379:6379'
